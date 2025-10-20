@@ -16,6 +16,33 @@ function getOutputChannel(): vscode.OutputChannel {
 }
 
 /**
+ * Get all subdirectories from a directory (non-recursive, only direct children)
+ */
+async function getSubdirectories(dirPath: string): Promise<string[]> {
+    const subdirs: string[] = [];
+    
+    try {
+        const entries = await fs.promises.readdir(dirPath, { withFileTypes: true });
+        
+        for (const entry of entries) {
+            if (entry.isDirectory()) {
+                // Skip common directories to ignore
+                if (entry.name === 'node_modules' || entry.name === '.git' ||
+                    entry.name === '__pycache__' || entry.name === '.venv' ||
+                    entry.name === 'venv' || entry.name.startsWith('.')) {
+                    continue;
+                }
+                subdirs.push(path.join(dirPath, entry.name));
+            }
+        }
+    } catch (error) {
+        console.error(`Error reading directory ${dirPath}:`, error);
+    }
+    
+    return subdirs;
+}
+
+/**
  * Get all Python files recursively from a directory
  */
 async function getAllPythonFiles(dirPath: string): Promise<string[]> {
@@ -59,36 +86,66 @@ async function checkDuplicatesCommand(): Promise<void> {
     output.show();
     output.appendLine(`[${new Date().toLocaleTimeString()}] Starting duplicate check...`);
 
-    // Determine the default folder to show
-    let defaultUri: vscode.Uri | undefined;
+    // Determine the base directory
+    let baseDir: string;
+    let baseDirLabel: string;
     
     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-        // If there's a workspace, use it as default
-        defaultUri = vscode.workspace.workspaceFolders[0].uri;
+        // If there's a workspace, use it as base
+        baseDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
+        baseDirLabel = path.basename(baseDir);
     } else {
         // If no workspace, use $HOME
         const homeDir = process.env.HOME || process.env.USERPROFILE;
-        if (homeDir) {
-            defaultUri = vscode.Uri.file(homeDir);
+        if (!homeDir) {
+            vscode.window.showErrorMessage('Cannot determine home directory');
+            return;
         }
+        baseDir = homeDir;
+        baseDirLabel = '~ (Home)';
     }
 
-    // Show folder picker
-    const folderUris = await vscode.window.showOpenDialog({
-        canSelectFiles: false,
-        canSelectFolders: true,
-        canSelectMany: false,
-        defaultUri: defaultUri,
-        openLabel: 'Select Folder to Check'
+    // Get subdirectories
+    const subdirs = await getSubdirectories(baseDir);
+    
+    // Create quick pick items
+    interface FolderPickItem extends vscode.QuickPickItem {
+        folderPath: string;
+    }
+    
+    const items: FolderPickItem[] = [
+        {
+            label: `📁 ${baseDirLabel}`,
+            description: baseDir,
+            detail: 'Check this folder',
+            folderPath: baseDir
+        }
+    ];
+    
+    // Add subdirectories
+    for (const subdir of subdirs) {
+        items.push({
+            label: `📂 ${path.basename(subdir)}`,
+            description: path.relative(baseDir, subdir),
+            detail: 'Check this subfolder',
+            folderPath: subdir
+        });
+    }
+
+    // Show quick pick
+    const selected = await vscode.window.showQuickPick(items, {
+        placeHolder: 'Select a folder to check for duplicate Python functions',
+        matchOnDescription: true,
+        matchOnDetail: false
     });
 
-    if (!folderUris || folderUris.length === 0) {
+    if (!selected) {
         output.appendLine('❌ No folder selected. Operation cancelled.');
         vscode.window.showInformationMessage('Folder selection cancelled.');
         return;
     }
 
-    const selectedFolder = folderUris[0].fsPath;
+    const selectedFolder = selected.folderPath;
     output.appendLine(`📁 Selected folder: ${selectedFolder}`);
     output.appendLine('🔍 Scanning for Python files...');
 
