@@ -14,9 +14,7 @@
     "categories": [
         "Linters"
     ],
-    "activationEvents": [
-        "onLanguage:python"
-    ],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
