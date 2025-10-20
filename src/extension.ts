@@ -87,13 +87,11 @@ async function checkDuplicatesCommand(): Promise<void> {
     output.appendLine(`[${new Date().toLocaleTimeString()}] Starting duplicate check...`);
 
     // Determine the base directory
-    let baseDir: string;
-    let baseDirLabel: string;
+    let rootDir: string;
     
     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
         // If there's a workspace, use it as base
-        baseDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        baseDirLabel = path.basename(baseDir);
+        rootDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
     } else {
         // If no workspace, use $HOME
         const homeDir = process.env.HOME || process.env.USERPROFILE;
@@ -101,51 +99,93 @@ async function checkDuplicatesCommand(): Promise<void> {
             vscode.window.showErrorMessage('Cannot determine home directory');
             return;
         }
-        baseDir = homeDir;
-        baseDirLabel = '~ (Home)';
+        rootDir = homeDir;
     }
 
-    // Get subdirectories
-    const subdirs = await getSubdirectories(baseDir);
-    
-    // Create quick pick items
+    // Folder browser function
     interface FolderPickItem extends vscode.QuickPickItem {
         folderPath: string;
+        isAction?: 'select' | 'browse' | 'back';
     }
-    
-    const items: FolderPickItem[] = [
-        {
-            label: `📁 ${baseDirLabel}`,
-            description: baseDir,
-            detail: 'Check this folder',
-            folderPath: baseDir
-        }
-    ];
-    
-    // Add subdirectories
-    for (const subdir of subdirs) {
+
+    async function browseFolder(currentDir: string): Promise<string | undefined> {
+        const subdirs = await getSubdirectories(currentDir);
+        
+        const items: FolderPickItem[] = [];
+        
+        // Add "Select this folder" option
         items.push({
-            label: `📂 ${path.basename(subdir)}`,
-            description: path.relative(baseDir, subdir),
-            detail: 'Check this subfolder',
-            folderPath: subdir
+            label: '✅ Select This Folder',
+            description: currentDir,
+            detail: 'Check for duplicates in this folder',
+            folderPath: currentDir,
+            isAction: 'select'
         });
+
+        // Add "Go back" option if not at root
+        if (currentDir !== rootDir) {
+            const parentDir = path.dirname(currentDir);
+            items.push({
+                label: '⬆️ Go Back',
+                description: path.basename(parentDir),
+                detail: 'Go to parent folder',
+                folderPath: parentDir,
+                isAction: 'back'
+            });
+        }
+
+        // Add separator
+        if (subdirs.length > 0) {
+            items.push({
+                label: '',
+                description: '─'.repeat(50),
+                detail: '',
+                folderPath: '',
+                kind: vscode.QuickPickItemKind.Separator
+            } as any);
+        }
+        
+        // Add subdirectories
+        for (const subdir of subdirs) {
+            items.push({
+                label: `📂 ${path.basename(subdir)}`,
+                description: '',
+                detail: 'Browse into this folder',
+                folderPath: subdir,
+                isAction: 'browse'
+            });
+        }
+
+        // Show quick pick
+        const selected = await vscode.window.showQuickPick(items, {
+            placeHolder: `Current: ${currentDir === rootDir ? path.basename(rootDir) : path.relative(rootDir, currentDir) || path.basename(rootDir)}`,
+            matchOnDescription: true,
+            matchOnDetail: false
+        });
+
+        if (!selected) {
+            return undefined;
+        }
+
+        if (selected.isAction === 'select') {
+            return selected.folderPath;
+        } else if (selected.isAction === 'back') {
+            return browseFolder(selected.folderPath);
+        } else if (selected.isAction === 'browse') {
+            return browseFolder(selected.folderPath);
+        }
+
+        return undefined;
     }
 
-    // Show quick pick
-    const selected = await vscode.window.showQuickPick(items, {
-        placeHolder: 'Select a folder to check for duplicate Python functions',
-        matchOnDescription: true,
-        matchOnDetail: false
-    });
+    // Start browsing from root
+    const selectedFolder = await browseFolder(rootDir);
 
-    if (!selected) {
+    if (!selectedFolder) {
         output.appendLine('❌ No folder selected. Operation cancelled.');
         vscode.window.showInformationMessage('Folder selection cancelled.');
         return;
     }
-
-    const selectedFolder = selected.folderPath;
     output.appendLine(`📁 Selected folder: ${selectedFolder}`);
     output.appendLine('🔍 Scanning for Python files...');
 
