@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <menuitem
-        action="test_action"
-        id="test_menu"
-        name="Test"
-    />
-</odoo>

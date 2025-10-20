@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<root>
-    <button name="action" string="Submit" type="object" class="btn-primary" icon="fa-check" attrs="{'invisible': [('state', '=', 'done')]}"/>
-</root>

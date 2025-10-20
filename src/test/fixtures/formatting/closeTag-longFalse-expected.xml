@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<root>
-    <field
-        name="test"
-        placeholder="Very long placeholder text that exceeds maximum line length"
-        readonly="False"
-        required="True"/>
-</root>

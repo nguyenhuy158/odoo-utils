@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <!-- This is a comment -->
-    <record id="test_record" model="test.model">
-        <!-- Field comment -->
-        <field name="name">Test</field>
-    </record>
-</odoo>

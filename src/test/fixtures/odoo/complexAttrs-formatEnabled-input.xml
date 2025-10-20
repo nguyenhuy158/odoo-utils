@@ -1,5 +1,0 @@
-<odoo>
-    <xpath position="attributes">
-        <attribute name="attrs">{'invisible': ['|', '|', '|', '|', ('is_return', '=', True), ('is_hide_related', '=', True), ('bill_state', 'not in', ['replacement', 'adjustment']), ('state', '!=', 'invoice'), ('invoice_id', '=', True)]}</attribute>
-    </xpath>
-</odoo>

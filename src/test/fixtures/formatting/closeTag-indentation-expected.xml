@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<root>
-    <field
-        name="test"
-        placeholder="Very long placeholder text"
-        required="True"
-    />
-</root>

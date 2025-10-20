@@ -1,7 +1,0 @@
-<odoo>
-    <xpath expr="//button[@name='action']" position="attributes">
-        <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
-        <attribute name="class">btn-primary</attribute>
-        <attribute name="string">Submit</attribute>
-    </xpath>
-</odoo>

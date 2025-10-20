@@ -1,146 +1,37 @@
 {
     "name": "odoo-utils",
-    "displayName": "odoo-utils",
-    "description": "Just using for format xml in Odoo",
+    "displayName": "Odoo Utils",
+    "description": "Utility tools for Odoo development - check duplicate function definitions in Python files",
     "repository": {
         "type": "git",
         "url": "https://github.com/nguyenhuy158/odoo-utils.git"
     },
     "publisher": "nguyenhuy158",
-    "version": "1.0.11",
+    "version": "0.0.1",
     "engines": {
         "vscode": "^1.102.0"
     },
     "categories": [
-        "Other"
+        "Linters"
     ],
     "activationEvents": [
-        "onLanguage:xml"
+        "onLanguage:python"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
-                "command": "odoo-utils.formatDocument",
-                "title": "odoo-utils: Format Document"
-            },
-            {
-                "command": "odoo-utils.testFormatter",
-                "title": "odoo-utils: Test Formatter"
-            },
-            {
-                "command": "odoo-utils.showConfiguration",
-                "title": "odoo-utils: Show Configuration"
-            },
-            {
-                "command": "odoo-utils.debugOutput",
-                "title": "odoo-utils: Debug Output Channel"
-            },
-            {
-                "command": "odoo-utils.testFormatOnSave",
-                "title": "odoo-utils: Test Format On Save"
+                "command": "odoo-utils.checkDuplicates",
+                "title": "Odoo-utils: Check Duplicate Functions"
             }
-        ],
-        "configuration": {
-            "title": "XML Formater",
-            "properties": {
-                "odoo-utils.indentSize": {
-                    "type": "number",
-                    "default": 4,
-                    "minimum": 1,
-                    "maximum": 8,
-                    "description": "Number of spaces or tabs for indentation"
-                },
-                "odoo-utils.indentType": {
-                    "type": "string",
-                    "enum": [
-                        "spaces",
-                        "tabs"
-                    ],
-                    "default": "spaces",
-                    "description": "Type of indentation to use"
-                },
-                "odoo-utils.maxLineLength": {
-                    "type": "number",
-                    "default": 120,
-                    "minimum": 80,
-                    "maximum": 200,
-                    "description": "Maximum line length before wrapping"
-                },
-                "odoo-utils.preserveAttributes": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Preserve attribute order and formatting"
-                },
-                "odoo-utils.formatAttributes": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Format attributes on separate lines when they are many"
-                },
-                "odoo-utils.sortAttributes": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Sort attributes alphabetically by name"
-                },
-                "odoo-utils.selfClosingTags": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Use self-closing tags for empty elements"
-                },
-                "odoo-utils.formatOnSave": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Automatically format XML files when saving"
-                },
-                "odoo-utils.odooSpecific": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable Odoo-specific XML formatting rules"
-                },
-                "odoo-utils.closeTagOnNewLine": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Put closing tag '/>' on a new line when formatting attributes on separate lines"
-                },
-                "odoo-utils.preserveComments": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Preserve XML comments during formatting (when disabled, comments will be removed)"
-                },
-                "odoo-utils.maximumBlankLines": {
-                    "type": "number",
-                    "default": 0,
-                    "minimum": 0,
-                    "maximum": 5,
-                    "description": "Maximum number of consecutive blank lines allowed"
-                },
-                "odoo-utils.highlightErrorDuration": {
-                    "type": "number",
-                    "default": 5000,
-                    "minimum": 1000,
-                    "maximum": 30000,
-                    "description": "Duration in milliseconds to highlight error lines (default: 5000ms)"
-                }
-            }
-        }
+        ]
     },
     "scripts": {
-        "vscode:prepublish": "npm run build:prod",
-        "compile": "tsc -p ./ && npm run copy:fixtures",
+        "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "copy:fixtures": "mkdir -p out/test/fixtures && cp -r src/test/fixtures/* out/test/fixtures/",
-        "build:prod": "node build.js",
-        "build:watch": "node build.js --watch",
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src",
-        "test": "vscode-test --coverage --parallel --jobs 2",
-        "package": "vsce package",
-        "publish": "vsce publish",
-        "prepublish": "npm test",
-        "pub:patch": "npm test && npx vsce publish patch",
-        "pub:minor": "npm test && npx vsce publish minor",
-        "pub:major": "npm test && npx vsce publish major",
-        "git:tag": "git push origin --tags"
+        "test": "vscode-test"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
@@ -154,8 +45,5 @@
         "eslint": "^9.36.0",
         "typescript": "^5.9.3"
     },
-    "dependencies": {
-        "fast-xml-parser": "^5.3.0",
-        "vsce": "^2.15.0"
-    }
+    "dependencies": {}
 }
