@@ -29,7 +29,11 @@
         "watch": "tsc -watch -p ./",
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src",
-        "test": "vscode-test"
+        "test": "vscode-test",
+        "pub:patch": "npm test && npx vsce publish patch",
+        "pub:minor": "npm test && npx vsce publish minor",
+        "pub:major": "npm test && npx vsce publish major",
+        "git:tag": "git push origin --tags"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
