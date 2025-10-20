@@ -1,0 +1,5 @@
+<odoo>
+    <xpath expr="//button[@name='test']" position="attributes">
+        <attribute name="attrs">{'invisible': ['|', '|', ('field1', '=', True), ('field2', '=', False), ('field3', '!=', 'value')]}</attribute>
+    </xpath>
+</odoo>

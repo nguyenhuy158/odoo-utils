@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Top-level comment -->
+<odoo>
+    <record id="test" model="test.model">
+        <field name="name">Test</field>
+        <!-- Inline comment -->
+    </record>
+    <!-- Bottom comment -->
+</odoo>

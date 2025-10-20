@@ -1,0 +1,26 @@
+{
+    "tabSize": 4,
+    "useTabs": false,
+    "alignAttributes": true,
+    "formatAttributes": true,
+    "preserveComments": true,
+    "sortAttributes": true,
+    "preserveAttributes": false,
+    "emptyElementHandling": "selfClosing",
+    "selfClosingTags": true,
+    "maxLineLength": 80,
+    "closeTagOnNewLine": true,
+    "maximumBlankLines": 1,
+    "odooTagSpacing": true,
+    "odooSpacingTags": [
+        "record",
+        "menuitem",
+        "template",
+        "function",
+        "delete",
+        "report"
+    ],
+    "keepCDATA": true,
+    "formatOnSave": false,
+    "highlightErrorDuration": 5000
+}

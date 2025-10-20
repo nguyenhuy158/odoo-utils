@@ -1,0 +1,1 @@
+<record id="very_long_record_name_that_makes_line_way_too_long" model="some.very.long.model.name.here" active="true" state="draft" priority="high">content</record>

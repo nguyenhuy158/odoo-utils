@@ -1,0 +1,4 @@
+<form string="Partner Form" class="o_partner_form" create="true" edit="true">
+    <field name="name" string="Name" required="true" placeholder="Enter name"/>
+    <field name="email" widget="email" string="Email Address"/>
+</form>

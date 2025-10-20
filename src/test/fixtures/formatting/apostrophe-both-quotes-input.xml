@@ -1,0 +1,4 @@
+<record id="test">
+  <field name="domain">[('state', '=', 'draft')]</field>
+  <field name="domain2">[("type", "=", "sale")]</field>
+</record>

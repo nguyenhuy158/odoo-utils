@@ -1,0 +1,8 @@
+Skip these:
+- node_modules/
+- out/
+- *.vsix
+- .git/
+- package-lock.json
+- vsc-extension-quickstart.md
+- .env

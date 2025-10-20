@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="test_very_long_record_id_that_exceeds_twenty_chars" model="ir.ui.view">
+        <field name="name">Test
+    </record>
+</odoo>

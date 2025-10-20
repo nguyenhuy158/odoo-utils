@@ -1,0 +1,1 @@
+<record id="test_record" model="test.model" active="true" name="Test Name" context="test_context" priority="high">content</record>

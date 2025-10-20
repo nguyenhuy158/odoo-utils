@@ -1,0 +1,8 @@
+<record
+    active="true"
+    context="ctx"
+    id="very_long_id_here"
+    model="some.model.name"
+    priority="high"
+    state="draft"
+/>

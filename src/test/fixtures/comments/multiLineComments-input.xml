@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Multi-line comment
+         This spans multiple lines
+         And continues here -->
+    <record id="test" model="test.model">
+        <field name="name">Test</field>
+    </record>
+</odoo>

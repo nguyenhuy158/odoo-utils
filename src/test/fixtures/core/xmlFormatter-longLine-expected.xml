@@ -1,0 +1,7 @@
+<record
+    context="{'key1': 'very_long_value_1', 'key2': 'very_long_value_2'}"
+    id="very_long_record_name_that_makes_line_too_long"
+    model="some.very.long.model.name"
+>
+    content
+</record>

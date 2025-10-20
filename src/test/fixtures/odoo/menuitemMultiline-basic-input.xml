@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem
+        action="transfer_agreement_action"
+        groups="agreement.read"
+        id="transfer_agreement_menu"
+        name="Transfer"
+        parent="agreement.agreement_menu_root"
+        sequence="5"
+    />
+</odoo>

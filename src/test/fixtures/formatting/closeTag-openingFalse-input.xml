@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<root>
+    <xpath expr="//button[@name='action_view_delivery_and_picking_operations']" position="attributes" mode="extension">
+        <attribute name="invisible">1</attribute>
+    </xpath>
+</root>
